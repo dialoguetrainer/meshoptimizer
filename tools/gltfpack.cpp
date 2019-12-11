@@ -1009,7 +1009,7 @@ void filterStreams(Mesh& mesh)
 	{
 		Stream& stream = mesh.streams[i];
 
-		if (stream.type == cgltf_attribute_type_texcoord && (!mesh.material || !usesTextureSet(*mesh.material, stream.index)))
+		if (stream.type == cgltf_attribute_type_texcoord && (!mesh.material || false))
 			continue;
 
 		if (stream.type == cgltf_attribute_type_tangent && (!mesh.material || !mesh.material->normal_texture.texture))
