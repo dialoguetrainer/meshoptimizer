@@ -366,9 +366,9 @@ static void analyzeMaterialTexture(const cgltf_texture_view& view, TextureKind k
 {
 	mi.usesTextureTransform |= hasValidTransform(view);
 
-	if (view.texture && view.texture->image)
+	if (view.texture && (view.texture->image || view.texture->basisu_image))
 	{
-		ImageInfo& info = images[view.texture->image - data->images];
+		ImageInfo& info = images[(view.texture->has_basisu ? view.texture->basisu_image : view.texture->image) - data->images];
 
 		mi.textureSetMask |= 1u << view.texcoord;
 		mi.needsTangents |= (kind == TextureKind_Normal);
@@ -486,7 +486,7 @@ void optimizeMaterials(cgltf_data* data, const char* input_path, std::vector<Ima
 			const cgltf_texture_view* color = getColorTexture(data->materials[i]);
 			float alpha = getAlphaFactor(data->materials[i]);
 
-			if (alpha == 1.f && !(color && color->texture && color->texture->image && getChannels(*color->texture->image, images[color->texture->image - data->images], input_path) == 4))
+			if (alpha == 1.f && (color && !color->texture->has_basisu) && !(color && color->texture && color->texture->image && getChannels(*color->texture->image, images[color->texture->image - data->images], input_path) == 4))
 			{
 				data->materials[i].alpha_mode = cgltf_alpha_mode_opaque;
 			}
