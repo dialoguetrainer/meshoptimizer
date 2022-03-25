@@ -1012,7 +1012,7 @@ int gltfpack(const char* input, const char* output, const char* report, Settings
 	}
 #endif
 
-	if (oext == ".glb")
+	if (oext == ".glb" && !settings.texture_no_embed)
 	{
 		settings.texture_embed = true;
 	}
@@ -1275,6 +1275,10 @@ int main(int argc, char** argv)
 			settings.meshlet_debug = clamp(atoi(argv[++i]), 3, 255);
 		}
 #endif
+		else if (strcmp(arg, "-tne") == 0)
+		{
+			settings.texture_no_embed = true;
+		}
 		else if (strcmp(arg, "-tu") == 0)
 		{
 			settings.texture_ktx2 = true;
@@ -1429,6 +1433,7 @@ int main(int argc, char** argv)
 			fprintf(stderr, "\t-o file: output file path, .gltf/.glb\n");
 			fprintf(stderr, "\t-c: produce compressed gltf/glb files (-cc for higher compression ratio)\n");
 			fprintf(stderr, "\nTextures:\n");
+			fprintf(stderr, "\t-tne: no texture file embedding for GLBs\n");
 			fprintf(stderr, "\t-tc: convert all textures to KTX2 with BasisU supercompression\n");
 			fprintf(stderr, "\t-tu: use UASTC when encoding textures (much higher quality and much larger size)\n");
 			fprintf(stderr, "\t-tq N: set texture encoding quality (default: 8; N should be between 1 and 10\n");

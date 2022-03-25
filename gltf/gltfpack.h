@@ -123,6 +123,7 @@ struct Settings
 
 	bool texture_ktx2;
 	bool texture_embed;
+	bool texture_no_embed;
 	bool texture_toktx;
 
 	bool texture_pow2;
